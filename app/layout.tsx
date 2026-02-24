@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Navbar from "@/components/web/Navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 
 export const metadata: Metadata = {
@@ -15,13 +16,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={` antialiased max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8`}
-      >
-            <Navbar/>
-        <main className="mt-10">
+    <html suppressHydrationWarning lang="en">
+      <body className={`antialiased`}>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
+  
+        <main className="mt-10 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
+          <Navbar/>
         {children}
         </main>
+        </ThemeProvider>
+      
 
       </body>
     </html>

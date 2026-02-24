@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Navbar from "@/components/web/Navbar";
-import { inter, radley } from "@/fonts";
 
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${radley.variable} antialiased max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8`}
+      <body className={` antialiased max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8`}
       >
             <Navbar/>
         <main className="mt-10">

@@ -1,10 +1,5 @@
+import { ComponentExample } from "@/components/component-example";
 
-
-export default function Home() {
-  return (
-    <div>
-      <h1>Hello World, Welcome to Reservate</h1>
-
-    </div>
-  );
+export default function Page() {
+return <ComponentExample />;
 }

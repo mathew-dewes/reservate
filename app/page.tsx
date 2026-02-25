@@ -1,9 +1,15 @@
 
-export default function Page() {
-return(<div>
- <h1>Hello World</h1>
+
+export default async function Page() {
 
 
-</div>)
+    
+return(
+
+<div>
+  <h1>Welcome landing page</h1>
+
+</div>
+)
 
 }

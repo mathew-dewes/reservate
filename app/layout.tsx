@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/web/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 
 export const metadata: Metadata = {
@@ -28,6 +29,12 @@ export default function RootLayout({
           <Navbar/>
         {children}
         </main>
+         <Toaster 
+ duration={3000}
+ closeButton
+ expand
+
+ />
         </ThemeProvider>
       
 

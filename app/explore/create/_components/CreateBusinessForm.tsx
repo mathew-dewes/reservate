@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/input-group"
 import { businessSchema } from "@/lib/schemas";
 
-import { createBusiness } from "@/lib/db/mutations/business"
+import { createBusiness, updateBusinessImage } from "@/lib/db/mutations/business"
 import { useState, useTransition, ChangeEvent } from "react"
 import { useRouter } from "next/navigation"
 import { uploadImage } from "@/lib/db/mutations/image"
@@ -68,25 +68,30 @@ export default function CreateBusinessForm() {
     function onSubmit(values: z.infer<typeof businessSchema>) {
         startTransition(async () => {
 
-                const res = await createBusiness(values);
-                const businessId = res.businessId;
+            const res = await createBusiness(values);
+            const businessId = res.businessId;
 
-                if (image && businessId) {
-                    setUploading(true);
-                    
-                    const imageUrl = await uploadImage(image, businessId);
-                    console.log("Uploaded image URL:", imageUrl);
-                    setUploading(false);
-                }
-                if (res.success) {
-                    toast.success(res.message);
-                    router.push('/explore')
-                } else {
-                    toast.error(res.message)
+            if (image && businessId) {
+                setUploading(true);
+
+                const imageUrl = await uploadImage(image, businessId);
+
+                if (imageUrl) {
+                    await updateBusinessImage(businessId, imageUrl)
                 }
 
+                setUploading(false);
+            }
+            if (res.success) {
 
-           
+                toast.success(res.message);
+                router.push('/explore')
+            } else {
+                toast.error(res.message)
+            }
+
+
+
         })
     };
 

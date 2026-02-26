@@ -5,6 +5,8 @@ import { getUserId } from "../session/user";
 import { businessSchema } from "@/lib/schemas";
 import prisma from "@/lib/config/prisma";
 import { revalidatePath } from "next/cache";
+import { supabaseAdmin } from "@/lib/supabase-admin";
+
 
 
 export async function createBusiness(values: z.infer<typeof businessSchema>){
@@ -50,6 +52,26 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
     
 
     
+};
+
+export async function updateBusinessImage(businessId: string, imageUrl: string){
+    const userId = await getUserId();
+    try {
+        await prisma.business.update({
+            where:{
+                id: businessId, userId
+            },
+            data:{
+                logoUrl: imageUrl
+            }
+        });
+
+        return {success: true}
+    } catch (error) {
+        console.log(error);
+        
+           return {success: false}
+    }
 }
 
 export async function deleteBusiness(businessId: string){
@@ -62,6 +84,22 @@ export async function deleteBusiness(businessId: string){
                 name: true
             }
         });
+
+        const folder = businessId;
+        const {data: files, error: listError} = await supabaseAdmin.storage.from('business-images').list(folder);
+
+        if (listError){
+            console.error('Error listing files:', listError.message)
+        };
+
+        if (files && files.length > 0){
+            const paths = files.map(file => `${folder}/${file.name}`);
+            const {error: removeError} = await supabaseAdmin.storage.from('business-images').remove(paths);
+
+            if (removeError) console.error("Error deleting files:", removeError.message)
+        }
+
+        
 
         revalidatePath('/explore');
         return {success: true, message: `${business.name} was deleted`}

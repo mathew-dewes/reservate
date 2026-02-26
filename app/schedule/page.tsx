@@ -1,5 +1,6 @@
+import MyBusinesses from "./_components/MyBusinesses";
 
-import ImageUploader from "./_components/ImageUploader";
+
 
 
 export default async function schedulePage(){
@@ -7,7 +8,9 @@ export default async function schedulePage(){
     
     return (
         <div>
- <ImageUploader/>
+            <h2>My businesses:</h2>
+            <MyBusinesses/>
+
         </div>
     )
 }

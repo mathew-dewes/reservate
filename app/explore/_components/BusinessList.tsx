@@ -19,6 +19,7 @@ export default async function BusinessList() {
                     description={business.description}
                     tagline="The best fish and chips in the world"
                     imageUrl={business.imageUrl ?? ""}
+                    slug={business.slug}
                     />
 
                 })}

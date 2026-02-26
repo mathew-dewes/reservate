@@ -6,6 +6,7 @@ import { businessSchema } from "@/lib/schemas";
 import prisma from "@/lib/config/prisma";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { generateSlug } from "../helpers";
 
 
 
@@ -30,7 +31,7 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
                 name: parsed.data.name,
                 email: parsed.data.email,
                 phone: parsed.data.phone,
-                slug: parsed.data.name,
+                slug: generateSlug(parsed.data.name),
                 description: parsed.data.description
             },
             select:{

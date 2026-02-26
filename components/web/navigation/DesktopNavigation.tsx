@@ -28,7 +28,7 @@ export default function DesktopNavigation(){
     return <ul className="flex gap-5 items-center font-medium">
         {navLinks.map((link, key)=>{
             return    <Link key={key} className={cn(
-                    buttonVariants({ variant: "ghost", size: "lg", className: `${isActive(link.href) ? 'bg-primary text-white pointer-events-none' : ''}` }))} href={link.href}>{link.name}</Link>
+                    buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg"}))} href={link.href}>{link.name}</Link>
         })}
                         <Button hidden={!session} onClick={() => authClient.signOut({
                             fetchOptions: {

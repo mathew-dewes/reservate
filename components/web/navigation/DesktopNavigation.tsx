@@ -19,7 +19,7 @@ export default function DesktopNavigation(){
         const { data: session, refetch} = useSession();
 
       function isActive(path: string){
-        return pathname == path;
+        return pathname.startsWith(path);
 
       };
 

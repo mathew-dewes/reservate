@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function getUserId(){
     
@@ -14,3 +15,13 @@ export async function getUserId(){
     if (!user) throw new Error('Unauthorized');
     return user.id
 };
+
+export async function authCheck(){
+        const session =  await auth.api.getSession({
+        headers: await headers()
+    });
+    if (!session){
+        redirect('/');
+        
+    }
+}

@@ -15,6 +15,7 @@ export default function ImageUploader() {
 
 
     async function uploadImage(file: File): Promise<string | null> {
+        if (!file) return null
 
         const filePath = `${file.name}-${Date.now()}`
         const { error } = await supabase.storage.from("test").upload(filePath, file);
@@ -51,12 +52,7 @@ export default function ImageUploader() {
     }
     return (
         <Card className="w-sm mt-10">
-        <Image
-        height={500} width={400}
-        src="https://oxrtrrekmvslunhzycfr.supabase.co/storage/v1/object/public/test/Screenshot%202026-02-13%20155256.png-1771970696627"
-        alt="Event cover"
-        className="relative z-20 aspect-video w-full object-cover brightness-60 dark:brightness-40"
-      />
+
             <CardHeader>
                 <CardTitle>Upload an image</CardTitle>
             </CardHeader>

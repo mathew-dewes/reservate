@@ -11,15 +11,12 @@ export default async function BusinessList() {
 
     return (
         <div>
-            <div className="mt-5">
+            <div className="mt-5 grid grid-cols-3 gap-10">
                 {businesses.map((business)=>{
                     return <BusinessCard key={business.id} name={business.name} description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure, aspernatur?" tagline="The best fish and chips in the world"/>
 
                 })}
                    </div>
-
-            <p>Welcome</p>
-            <h1>Business List</h1>
         </div>
     )
 }

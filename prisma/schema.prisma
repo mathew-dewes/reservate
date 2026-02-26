@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -23,6 +17,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  businesses business[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +69,67 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model business {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  name String
+  slug String @unique
+  email String
+  phone String
+  logoUrl String
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  services services[]
+  availability availability[]
+  bookings bookings[]
+
+  
+
+}
+
+model services {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  businessId String
+  name String
+  description String
+  duration Int
+  price Float
+  business business @relation(fields: [businessId], references: [id])
+  bookings bookings[]
+  
+}
+
+model availability {
+  id String @id @default(cuid())
+  businessId String
+  daysOfWeek Int
+  startTime DateTime
+  endTime DateTime
+  business business @relation(fields: [businessId], references: [id])
+}
+
+model bookings {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    businessId String
+    serviceId String
+    customerName String
+    customerEmail String
+    customerPhone String
+    startTime DateTime
+    EndTime DateTime
+    status String
+
+    business business @relation(fields: [businessId], references: [id])
+    services services @relation(fields: [serviceId], references: [id])
+}
+
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
 }

@@ -12,6 +12,9 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 export async function createBusiness(values: z.infer<typeof businessSchema>){
     const userId = await getUserId();
 
+
+    
+
     try {
 
         const parsed = businessSchema.safeParse(values);
@@ -26,9 +29,9 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
                 userId,
                 name: parsed.data.name,
                 email: parsed.data.email,
-                logoUrl: "1233",
                 phone: parsed.data.phone,
-                slug: parsed.data.name
+                slug: parsed.data.name,
+                description: parsed.data.description
             },
             select:{
                 id:true,
@@ -62,7 +65,7 @@ export async function updateBusinessImage(businessId: string, imageUrl: string){
                 id: businessId, userId
             },
             data:{
-                logoUrl: imageUrl
+               imageUrl
             }
         });
 

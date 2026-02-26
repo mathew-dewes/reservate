@@ -50,7 +50,8 @@ export default function CreateBusinessForm() {
         defaultValues: {
             name: "",
             email: "",
-            phone: ""
+            phone: "",
+            description:""
         }
     });
 
@@ -69,6 +70,8 @@ export default function CreateBusinessForm() {
         startTransition(async () => {
 
             const res = await createBusiness(values);
+
+
             const businessId = res.businessId;
 
             if (image && businessId) {
@@ -158,6 +161,28 @@ export default function CreateBusinessForm() {
                     <Controller
                         control={form.control}
                         name="phone"
+
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor="form-rhf-demo-title">
+                                    Phone:
+                                </FieldLabel>
+                                <Input
+                                    {...field}
+                                    id="form-rhf-demo-title"
+                                    aria-invalid={fieldState.invalid}
+                                    placeholder="Business name"
+                                    autoComplete="off"
+                                />
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="description"
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor="form-rhf-demo-description">
@@ -178,10 +203,10 @@ export default function CreateBusinessForm() {
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
-                                <FieldDescription>
+                                {/* <FieldDescription>
                                     Include steps to reproduce, expected behavior, and what
                                     actually happened.
-                                </FieldDescription>
+                                </FieldDescription> */}
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
                                 )}
@@ -191,7 +216,7 @@ export default function CreateBusinessForm() {
                     />
 
                     <Field>
-                        <FieldLabel htmlFor="picture">Picture</FieldLabel>
+                        <FieldLabel htmlFor="picture">Image - Optional</FieldLabel>
                         <Input id="picture" type="file" accept="image/*" onChange={handleFileChange} />
                         <FieldDescription>Select a picture to upload.</FieldDescription>
                     </Field>

@@ -24,7 +24,7 @@ export default function BusinessCard({name, tagline, description, businessId, im
       />
                     <CardHeader>
                         <CardTitle>{name}</CardTitle>
-                              <CardDescription>
+                        <CardDescription>
                         {tagline}
                     </CardDescription>
                     </CardHeader>

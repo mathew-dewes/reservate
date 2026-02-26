@@ -14,8 +14,9 @@ export const registerSchema = z.object({
 
 export const businessSchema = z.object({
     name: z.string().min(3, 'Business name must be 3 or characters').max(20, 'Business name must be 20 or less characters'),
-    email: z.string(),
+    email: z.string().min(1, 'Email is required'),
     phone: z.string(),
+    description: z.string().min(1, 'Description is required').max(200, 'Description must be 200 or less characters')
 
 
 })

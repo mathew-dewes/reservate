@@ -78,8 +78,9 @@ model business {
   slug String @unique
   email String
   phone String
-  logoUrl String
+  imageUrl String?
   userId String
+  description String
   user User @relation(fields: [userId], references: [id])
   services services[]
   availability availability[]

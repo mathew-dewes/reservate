@@ -6,6 +6,7 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/superbase-client";
 import { ChangeEvent, useState } from "react";
+import Image from "next/image";
 
 export default function ImageUploader() {
 
@@ -50,7 +51,8 @@ export default function ImageUploader() {
     }
     return (
         <Card className="w-sm mt-10">
-               <img
+        <Image
+        height={500} width={400}
         src="https://oxrtrrekmvslunhzycfr.supabase.co/storage/v1/object/public/test/Screenshot%202026-02-13%20155256.png-1771970696627"
         alt="Event cover"
         className="relative z-20 aspect-video w-full object-cover brightness-60 dark:brightness-40"

@@ -55,10 +55,6 @@ export default function CreateBusinessForm() {
     });
 
 
-    
-
-
-
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
         const files = e.target.files
         if (files && files.length > 0) {
@@ -67,20 +63,18 @@ export default function CreateBusinessForm() {
 
     };
 
-    
-
-
 
 
     function onSubmit(values: z.infer<typeof businessSchema>) {
         startTransition(async () => {
 
                 const res = await createBusiness(values);
+                const businessId = res.businessId;
 
-                if (image) {
+                if (image && businessId) {
                     setUploading(true);
                     
-                    const imageUrl = await uploadImage(image);
+                    const imageUrl = await uploadImage(image, businessId);
                     console.log("Uploaded image URL:", imageUrl);
                     setUploading(false);
                 }
@@ -205,8 +199,9 @@ export default function CreateBusinessForm() {
                     Reset
                 </Button>
                 <Button type="submit" form="form-rhf-demo">
-                    Submit
+                    {isPending ? "Submitting" : "Submit"}
                 </Button>
+                {uploading && <p>Uploading...</p>}
             </Field>
         </CardFooter>
     </Card>

@@ -13,7 +13,7 @@ export default async function BusinessList() {
         <div>
             <div className="mt-5 grid grid-cols-3 gap-10">
                 {businesses.map((business)=>{
-                    return <BusinessCard key={business.id} name={business.name} description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure, aspernatur?" tagline="The best fish and chips in the world"/>
+                    return <BusinessCard key={business.id} businessId={business.id} name={business.name} description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure, aspernatur?" tagline="The best fish and chips in the world"/>
 
                 })}
                    </div>

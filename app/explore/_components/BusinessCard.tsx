@@ -1,16 +1,19 @@
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
+import DeleteBusinessButton from "./DeleteBusinessButton";
+
 
 type CardProps =  {
   name: string
   tagline: string
   description: string
+  businessId: string
 
   
 }
 
-export default function BusinessCard({name, tagline, description}: CardProps){
+export default function BusinessCard({name, tagline, description, businessId}: CardProps){
     return  <Card size="sm" className="w-full max-w-sm">
         <Image
         height={500} width={400}
@@ -30,9 +33,13 @@ export default function BusinessCard({name, tagline, description}: CardProps){
         </p>
       </CardContent>
        <CardFooter>
-        <Button variant="outline" size="sm" className="w-full">
+        <div>
+          
+        </div>
+   <DeleteBusinessButton businessId={businessId}/>
+        {/* <Button variant="outline" size="sm" className="w-full">
           Action
-        </Button>
+        </Button> */}
       </CardFooter>
               
                 </Card>

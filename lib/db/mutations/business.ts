@@ -27,12 +27,16 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
                 logoUrl: "1233",
                 phone: parsed.data.phone,
                 slug: parsed.data.name
+            },
+            select:{
+                id:true,
+                name: true
             }
         });
 
         revalidatePath('/explore');
 
-        return {success: true, message: `${business.name} has been added`}
+        return {success: true, message: `${business.name} has been added`, businessId:business.id}
         
     } catch (error) {
 
@@ -46,4 +50,24 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
     
 
     
+}
+
+export async function deleteBusiness(businessId: string){
+    const userId = await getUserId();
+
+    try {
+        const business = await prisma.business.delete({
+            where:{userId, id: businessId},
+            select:{
+                name: true
+            }
+        });
+
+        revalidatePath('/explore');
+        return {success: true, message: `${business.name} was deleted`}
+    } catch (error) {
+        console.log('Delete failed:', error);
+        return {success: false, message: 'Delete failed'}
+        
+    }
 }

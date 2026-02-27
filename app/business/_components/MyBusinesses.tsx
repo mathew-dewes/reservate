@@ -8,16 +8,18 @@ export default async function MyBusinesses(){
     const businesses = await getUserBusinesses(userId)
     return (
           <div>
-                    <div className="mt-5 grid grid-cols-3 gap-10">
+            <h2 className="text-lg font-bold">My Businesses:</h2>
+        <div className="grid grid-cols-3 gap-10 mt-3">
+                        
                         {businesses.map((business)=>{
                             return <MyBusinessCard 
+                            published={business.publish}
                             key={business.id} 
-                            businessId={business.id} 
                             name={business.name} 
-                            description={business.description}
                             tagline="The best fish and chips in the world"
                             imageUrl={business.imageUrl ?? ""}
                             slug={business.slug}
+
                             />
         
                         })}

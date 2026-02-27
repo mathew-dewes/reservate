@@ -14,7 +14,7 @@ export default async function HomePageLinks(){
             
           <div className="mt-20 flex justify-center gap-5">
             {!session && <GoogleLoginButton/>}
-            <Link className={buttonVariants({size: "lg"})} href={'/schedule'}>View Schedule</Link>
+            <Link className={buttonVariants({size: "lg"})} href={'/business'}>View Schedule</Link>
             <Link className={buttonVariants({size: "lg"})} href={'/bookings'}>Manage Bookings</Link>
             <Link className={buttonVariants({size: "lg"})} href={'/explore'}>Explore</Link>
 

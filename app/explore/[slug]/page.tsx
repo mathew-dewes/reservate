@@ -13,7 +13,6 @@ export default async function page({params}:
 
     if (!business) return
 
-    console.log(business);
     
     return (
         <div>

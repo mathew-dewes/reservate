@@ -81,6 +81,7 @@ model business {
   imageUrl String?
   userId String
   description String
+  publish Boolean @default(false)
   user User @relation(fields: [userId], references: [id])
   services services[]
   availability availability[]

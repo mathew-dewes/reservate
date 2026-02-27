@@ -7,7 +7,7 @@ export default function explorePage(){
     return (
         <div>
             <div>
-                <Link href={'/explore/create'} className={buttonVariants()}>Create Business</Link>
+                <Link href={'/business/create'} className={buttonVariants()}>Create Business</Link>
         
             </div>
             <BusinessList/>

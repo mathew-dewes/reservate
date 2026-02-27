@@ -6,6 +6,7 @@ import { businessSchema } from "@/lib/schemas";
 import prisma from "@/lib/config/prisma";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { generateSlug } from "../helpers";
 
 
 
@@ -30,18 +31,19 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
                 name: parsed.data.name,
                 email: parsed.data.email,
                 phone: parsed.data.phone,
-                slug: parsed.data.name,
+                slug: generateSlug(parsed.data.name),
                 description: parsed.data.description
             },
             select:{
                 id:true,
-                name: true
+                name: true,
+                slug:true
             }
         });
 
         revalidatePath('/explore');
 
-        return {success: true, message: `${business.name} has been added`, businessId:business.id}
+        return {success: true, message: `${business.name} has been added`, businessId:business.id, slug: business.slug}
         
     } catch (error) {
 
@@ -75,6 +77,28 @@ export async function updateBusinessImage(businessId: string, imageUrl: string){
         
            return {success: false}
     }
+};
+
+export async function publishBusiness(slug: string){
+const userId = await getUserId();
+
+try {
+    const business = await prisma.business.update({
+        where:{userId, slug},
+        data:{
+            publish: true
+        }
+    });
+
+    revalidatePath('/')
+    revalidatePath('/explore')
+
+    return {success: true, message: business.name + " has been published"}
+} catch (error) {
+    console.log(error);
+    return {success: false, message: "Publish error"}
+    
+}
 }
 
 export async function deleteBusiness(businessId: string){

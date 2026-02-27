@@ -6,8 +6,9 @@ import Link from "next/link";
 import { ThemeToggle } from "../ThemeToggle";
 import { usePathname, useRouter } from "next/navigation";
 import { navLinks } from "@/lib/constants";
-import { authClient, signInWithGoogle } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import GoogleLoginButton from "../GoogleLoginButton";
 
 const { useSession } = authClient;
 
@@ -24,11 +25,12 @@ export default function DesktopNavigation(){
       };
 
 
+
  
     return <ul className="flex gap-5 items-center font-medium">
         {navLinks.map((link, key)=>{
-            return    <Link key={key} className={cn(
-                    buttonVariants({ variant: "ghost", size: "lg", className: `${isActive(link.href) ? 'bg-primary text-white pointer-events-none' : ''}` }))} href={link.href}>{link.name}</Link>
+            return    <Link hidden={!session && link.href !== "/explore"} key={key} className={cn(
+                    buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg"}))} href={link.href}>{link.name}</Link>
         })}
                         <Button hidden={!session} onClick={() => authClient.signOut({
                             fetchOptions: {
@@ -44,9 +46,9 @@ export default function DesktopNavigation(){
                                 }
                             }
                         })}>Logout</Button>
+                        {!session && <GoogleLoginButton size="lg"/>}
+               
 
-
-                                  <Button hidden={!!session} type="button"  onClick={signInWithGoogle}>Google</Button>
 
                 <ThemeToggle />
 

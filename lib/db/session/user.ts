@@ -24,4 +24,13 @@ export async function authCheck(){
         redirect('/');
         
     }
-}
+};
+
+export async function getSession(){
+    
+        const session = await auth.api.getSession({
+            headers: await headers()
+        });
+    
+    return session
+};

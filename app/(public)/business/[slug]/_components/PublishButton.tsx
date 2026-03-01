@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-export default function PublishButton({slug}:{slug: string}){
+export default function PublishButton({slug, hidden}:{slug: string, hidden: boolean}){
         const [isPending, startTransition] = useTransition();
         const router = useRouter()
 
@@ -23,6 +23,6 @@ export default function PublishButton({slug}:{slug: string}){
             }))
         }
     return(
-        <Button type="button" disabled={isPending} onClick={handlePublish}>{isPending ? "Publishing" : "Publish"}</Button>
+        <Button hidden={hidden} type="button" disabled={isPending} onClick={handlePublish}>{isPending ? "Publishing" : "Publish"}</Button>
     )
 }

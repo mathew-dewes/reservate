@@ -66,6 +66,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   businesses Business[]
+  services Service[]
 
   @@unique([email])
   @@map("user")
@@ -114,9 +115,11 @@ model Service {
   businessId String
   name String
   description String
+  userId String
   price Decimal @db.Decimal(10, 2)
   business Business @relation(fields: [businessId], references: [id])
   bookings Bookings[]
+  user User @relation(fields: [userId], references: [id])
   
 }
 

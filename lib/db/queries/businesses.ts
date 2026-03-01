@@ -19,17 +19,56 @@ export async function getBusiness(businessSlug: string){
         where:{
             slug: businessSlug,
       
+        },
+        select:{
+            email:true,
+            imageUrl: true,
+            name: true,
+            phone: true,
+            description: true,
+            userId:true,
+            publish: true
         }
     });
 
     return business;
 };
 
+export async function getBusinessDetails(businessSlug: string){
+        const business = await prisma.business.findUnique({
+        where:{
+            slug: businessSlug,
+      
+        },
+        select:{
+            email:true,
+            imageUrl: true,
+            name: true,
+            phone: true,
+            description: true,
+            id:true
+  
+        }
+    });
+
+    return business;
+}
+
 
 export async function getUserBusinesses(userId:string){
 
     const businesses = await prisma.business.findMany({
-        where:{userId}
+        where:{userId},
+        select:{
+            publish:true,
+            id: true,
+            name: true,
+            imageUrl: true,
+            slug: true
+        },
+        orderBy:{
+            publish: "asc"
+        }
     });
 
     return businesses;

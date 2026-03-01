@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import PublishButton from "../[slug]/_components/PublishButton";
-import ServiceForm from "../[slug]/_components/ServiceForm";
+
 
 type Props = {
     imageUrl: string
@@ -12,10 +12,12 @@ type Props = {
     email: string
     description: string
     slug: string
+    isAuthor: boolean,
+    published: boolean
 }
 
 
-export default function Business({ imageUrl, name, description, phone, email, slug }: Props) {
+export default function Business({ imageUrl, name, description, phone, email, slug, isAuthor, published }: Props) {
     return <Card size="sm" className="w-full max-w-xl mx-auto mt-10">
         <Image
             height={700} width={500}
@@ -35,23 +37,20 @@ export default function Business({ imageUrl, name, description, phone, email, sl
                 <p>Email: {email}</p>
             </div>
 
-{/* <Services/> */}
 
         </CardContent>
         <CardFooter>
-            <div className="w-full">
-                     <ServiceForm/>
                         <div className="flex gap-1">
 
                             <div className="mt-5">
-       <PublishButton slug={slug}/>
-                <Link className={buttonVariants()} href={'/explore/'}>Add Services</Link>
+       <PublishButton hidden={published && !isAuthor} slug={slug}/>
+                <Link className={buttonVariants()} href={`/business/${slug}/book`}>Manage Services</Link>
                             </div>
                      
          
 
             </div>
-            </div>
+         
               
         
 

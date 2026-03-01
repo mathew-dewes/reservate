@@ -30,16 +30,7 @@ export default function ServiceForm(){
         })
     }
 
-    return <Card className="w-full sm:max-w-md">
-             <CardHeader>
-            <CardTitle>Add Service</CardTitle>
-                   <CardDescription>
-                Fill out the required fields to link a service to your business
-            </CardDescription>
-                    </CardHeader>
-     
-            <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+    return <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
                           <Controller
                         control={form.control}
@@ -48,7 +39,7 @@ export default function ServiceForm(){
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor="form-rhf-demo-title">
-                                    Business name:
+                                    Service name:
                                 </FieldLabel>
                                 <Input
                                     {...field}
@@ -70,7 +61,29 @@ export default function ServiceForm(){
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor="form-rhf-demo-title">
-                                    Business name:
+                                    Service description:
+                                </FieldLabel>
+                                <Input
+                                    {...field}
+                                    id="form-rhf-demo-title"
+                                    aria-invalid={fieldState.invalid}
+                                    placeholder="Business name"
+                                    autoComplete="off"
+                                />
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+                          <Controller
+                        control={form.control}
+                        name="name"
+
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor="form-rhf-demo-title">
+                                    Price (Optional):
                                 </FieldLabel>
                                 <Input
                                     {...field}
@@ -88,8 +101,6 @@ export default function ServiceForm(){
                 </FieldGroup>
                 </form>
 
-            </CardContent>
-
-    </Card>
+  
 
 }

@@ -1,6 +1,7 @@
 import { getBusiness } from "@/lib/db/queries/businesses";
 import Business from "../_components/Business";
-import ServiceForm from "./_components/ServiceForm";
+import { getUserId } from "@/lib/db/session/user";
+
 
 
 export default async function page({params}:
@@ -11,14 +12,17 @@ export default async function page({params}:
 
     if (!slug) return
 
+    const userId = await getUserId();
     const business = await getBusiness(slug);
+
+    
 
     if (!business) return
 
     
     return (
         <div>
-            <Business slug={slug} email={business.email} imageUrl={business.imageUrl!} name={business.name} phone={business.phone} description={business.description}/>
+            <Business published={business.publish} isAuthor={userId !== business.userId} slug={slug} email={business.email} imageUrl={business.imageUrl!} name={business.name} phone={business.phone} description={business.description}/>
 
         </div>
     )

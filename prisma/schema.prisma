@@ -7,22 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  businesses business[]
-
-  @@unique([email])
-  @@map("user")
-}
-
 model Session {
   id        String   @id
   expiresAt DateTime
@@ -71,9 +55,28 @@ model Verification {
   @@map("verification")
 }
 
-model business {
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  businesses Business[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+
+
+model Business {
   id String @id @default(cuid())
   createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
   name String
   slug String @unique
   email String
@@ -82,38 +85,52 @@ model business {
   userId String
   description String
   publish Boolean @default(false)
+  slotInterval Int @default(30)
+  timezone     String  @default("Pacific/Auckland")
   user User @relation(fields: [userId], references: [id])
-  services services[]
-  availability availability[]
-  bookings bookings[]
+  services Service[]
+  availability Availability[]
+  bookings Bookings[]
+  blockedTime BlockedTime[]
 
   
 
 }
 
-model services {
+model BlockedTime {
+  id String @id @default(cuid())
+  businessId String
+  startTime DateTime
+  endTime DateTime
+  reason String?
+
+  business Business @relation(fields: [businessId], references: [id])
+  @@index([businessId, startTime])
+}
+
+model Service {
   id String @id @default(cuid())
   createdAt DateTime @default(now())
   businessId String
   name String
   description String
-  duration Int
-  price Float
-  business business @relation(fields: [businessId], references: [id])
-  bookings bookings[]
+  price Decimal @db.Decimal(10, 2)
+  business Business @relation(fields: [businessId], references: [id])
+  bookings Bookings[]
   
 }
 
-model availability {
+model Availability {
   id String @id @default(cuid())
   businessId String
   daysOfWeek Int
-  startTime DateTime
-  endTime DateTime
-  business business @relation(fields: [businessId], references: [id])
+  startTime String
+  endTime String
+  business Business @relation(fields: [businessId], references: [id])
+  @@unique([businessId, daysOfWeek])
 }
 
-model bookings {
+model Bookings {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
     businessId String
@@ -122,11 +139,15 @@ model bookings {
     customerEmail String
     customerPhone String
     startTime DateTime
-    EndTime DateTime
-    status String
+    endTime DateTime
+    status BookingStatus @default(PENDING)
+    source BookingSource @default(ONLINE)
 
-    business business @relation(fields: [businessId], references: [id])
-    services services @relation(fields: [serviceId], references: [id])
+    business Business @relation(fields: [businessId], references: [id])
+    service Service @relation(fields: [serviceId], references: [id])
+
+    @@unique([businessId, startTime])
+    @@index([businessId, startTime])
 }
 
 
@@ -134,4 +155,10 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+}
+
+enum BookingSource {
+  ONLINE
+  PHONE
+  WALK_IN
 }

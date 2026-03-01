@@ -1,6 +1,6 @@
 export const navLinks = [
-    {name: 'Business', href: '/business'},
-    {name: 'My Bookings', href: '/bookings'},
+    {name: 'Dashboard', href: '/dashboard'},
+    {name: 'My Bookings', href: '/my-bookings'},
     {name: 'Explore', href: '/explore'},
     {name: 'Account', href: '/account'}
 ]

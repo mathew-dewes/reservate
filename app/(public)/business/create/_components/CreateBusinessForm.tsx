@@ -89,7 +89,7 @@ export default function CreateBusinessForm() {
             if (res.success) {
 
                 toast.success(res.message);
-                router.push(`/business/${slug}/draft`)
+                router.push(`/business/${slug}`)
             } else {
                 toast.error(res.message)
             }
@@ -204,10 +204,10 @@ export default function CreateBusinessForm() {
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
-                                {/* <FieldDescription>
+                                <FieldDescription>
                                     Include steps to reproduce, expected behavior, and what
                                     actually happened.
-                                </FieldDescription> */}
+                                </FieldDescription>
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
                                 )}
@@ -221,6 +221,7 @@ export default function CreateBusinessForm() {
                         <Input id="picture" type="file" accept="image/*" onChange={handleFileChange} />
                         <FieldDescription>Select a picture to upload.</FieldDescription>
                     </Field>
+                    
                 </FieldGroup>
             </form>
         </CardContent>

@@ -46,6 +46,7 @@ export async function getBusinessDetails(businessSlug: string){
             name: true,
             phone: true,
             description: true,
+            id:true
   
         }
     });

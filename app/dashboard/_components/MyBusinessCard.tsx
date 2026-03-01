@@ -50,13 +50,13 @@ export default function MyBusinessCard({ name, tagline, imageUrl, slug, publishe
 
 
 
-        <Link className={buttonVariants()} href={'/explore/' + slug}>Add Services</Link>
+        <Link className={buttonVariants()} href={'/business/' + slug}>Add Services</Link>
         <Link className={buttonVariants()} href={'/schedule/upcoming/'}>View Schedule</Link>
 
       </div>) : (<div className="flex gap-1">
 
 
-        <Link className={buttonVariants()} href={`/business/${slug}/draft`}>Confirm details</Link>
+        <Link className={buttonVariants()} href={`/business/${slug}`}>Confirm details</Link>
       </div>)}
       <div className="flex gap-1">
 

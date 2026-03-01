@@ -2,7 +2,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import Services from "./Services";
+import PublishButton from "../[slug]/_components/PublishButton";
+import ServiceForm from "../[slug]/_components/ServiceForm";
 
 type Props = {
     imageUrl: string
@@ -10,10 +11,11 @@ type Props = {
     phone: string
     email: string
     description: string
+    slug: string
 }
 
 
-export default function Business({ imageUrl, name, description, phone, email }: Props) {
+export default function Business({ imageUrl, name, description, phone, email, slug }: Props) {
     return <Card size="sm" className="w-full max-w-xl mx-auto mt-10">
         <Image
             height={700} width={500}
@@ -33,16 +35,28 @@ export default function Business({ imageUrl, name, description, phone, email }: 
                 <p>Email: {email}</p>
             </div>
 
-<Services/>
+{/* <Services/> */}
 
         </CardContent>
         <CardFooter>
-            <div className="flex gap-1">
+            <div className="w-full">
+                     <ServiceForm/>
+                        <div className="flex gap-1">
 
-                <Link className={buttonVariants()} href={'/explore/'}>View more</Link>
+                            <div className="mt-5">
+       <PublishButton slug={slug}/>
+                <Link className={buttonVariants()} href={'/explore/'}>Add Services</Link>
+                            </div>
+                     
+         
+
             </div>
+            </div>
+              
+        
 
         </CardFooter>
+         
 
     </Card>
 }

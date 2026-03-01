@@ -39,7 +39,7 @@ export default function BusinessCard({name, tagline, description, businessId, im
        <CardFooter>
         <div className="flex gap-1">
         <DeleteBusinessButton businessId={businessId}/>
-       <Link className={buttonVariants()} href={'/explore/' + slug}>View more</Link>
+       <Link className={buttonVariants()} href={'/business/' + slug}>View more</Link>
         </div>
 
       </CardFooter>

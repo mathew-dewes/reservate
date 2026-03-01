@@ -1,5 +1,7 @@
 import { getBusiness } from "@/lib/db/queries/businesses";
-import Business from "./_components/Business";
+import Business from "../_components/Business";
+import ServiceForm from "./_components/ServiceForm";
+
 
 export default async function page({params}:
     {params: Promise<{slug: string}>}
@@ -16,7 +18,8 @@ export default async function page({params}:
     
     return (
         <div>
-            <Business email={business.email} imageUrl={business.imageUrl!} name={business.name} phone={business.phone} description={business.description}/>
+            <Business slug={slug} email={business.email} imageUrl={business.imageUrl!} name={business.name} phone={business.phone} description={business.description}/>
+
         </div>
     )
 }

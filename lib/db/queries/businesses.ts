@@ -27,7 +27,8 @@ export async function getBusiness(businessSlug: string){
             phone: true,
             description: true,
             userId:true,
-            publish: true
+            publish: true,
+            id: true
         }
     });
 

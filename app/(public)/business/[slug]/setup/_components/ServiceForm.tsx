@@ -20,6 +20,7 @@ import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 export default function ServiceForm({businessId, slug}:{businessId: string, slug: string}){
 
       const [isPending, startTransition] = useTransition();
@@ -29,7 +30,8 @@ export default function ServiceForm({businessId, slug}:{businessId: string, slug
           defaultValues:{
               name: "",
               description: "",
-              price: ""
+              price: "",
+              duration:"30 mins"
           }
       });
   
@@ -139,6 +141,35 @@ export default function ServiceForm({businessId, slug}:{businessId: string, slug
                             </Field>
                         )}
                     />
+                            <Controller
+                            
+                            
+                                        control={form.control}
+                                        name={"duration"}
+                                        render={({ field }) => {
+                                            return <Field>
+                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    Service duration:
+                                </FieldLabel>
+                                                <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <SelectTrigger className="w-full max-w-48">
+                                                    <SelectValue placeholder="Service duration" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectLabel>Service duration</SelectLabel>
+                                                        {["30 mins", "60 mins", "90 mins", "120 mins", "150 mins", "180 mins"].map((time) => (
+                                                            <SelectItem key={time} value={time}>{time}</SelectItem>
+                                                        ))}
+
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                                </Field>
+                                        }} />
                 </FieldGroup>
                 <div className="mt-3">
          {isPending ? <Button className="w-1/2" variant="secondary" disabled>

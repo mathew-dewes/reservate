@@ -20,59 +20,74 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { TIME_OPTIONS } from "@/lib/db/helpers"
+import { DAYS, TIME_OPTIONS } from "@/lib/db/helpers"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { availabilitySchema } from "@/lib/schemas"
 import z from "zod"
 import { upsertAvailability } from "@/lib/db/mutations/availability"
 import { startTransition } from "react"
 import { toast } from "sonner"
-
-const DAYS = [
-    { label: "Sunday", value: 0 },
-    { label: "Monday", value: 1 },
-    { label: "Tuesday", value: 2 },
-    { label: "Wednesday", value: 3 },
-    { label: "Thursday", value: 4 },
-    { label: "Friday", value: 5 },
-    { label: "Saturday", value: 6 },
-]
+import { CircleAlert } from "lucide-react"
 
 
 
-export default function Availability({businessId}:{businessId: string}) {
+type Props = {
+    businessId: string
+    savedValues: {
+        daysOfWeek: number
+        startTime: string
+        endTime: string
+    }[]
+};
+
+function buildDays(savedValues: Props["savedValues"]) {
+    const defaults = Array.from({ length: 7 }, (_, index) => ({
+        daysOfWeek: index,
+        open: false,
+        startTime: "09:00",
+        endTime: "17:00",
+    }));
+
+    savedValues.forEach((day) => {
+        defaults[day.daysOfWeek] = {
+            ...day,
+            open: true,
+        };
+    });
+
+    return defaults;
+}
+
+
+
+export default function Availability({ businessId, savedValues }: Props) {
     const form = useForm<z.infer<typeof availabilitySchema>>({
         resolver: zodResolver(availabilitySchema),
         defaultValues: {
-            days: DAYS.reduce((acc, day) => {
-                acc[day.value] = {
-                    open: day.value >= 1 && day.value <= 5,
-                    startTime: "09:00",
-                    endTime: "17:00",
-                }
-                return acc
-            }, {} as Record<number, { open: boolean; startTime: string; endTime: string }>)
+            days: buildDays(savedValues)
         }
     });
 
     const daysValues = useWatch({
-  control: form.control,
-  name: "days", 
-})
+        control: form.control,
+        name: "days",
+    })
 
     function onSubmit(values: z.infer<typeof availabilitySchema>) {
-        startTransition((async()=>{
-            const res = await upsertAvailability(businessId,values);
+        startTransition((async () => {
 
-            if (res.success){
-                toast.success(res.message)
+            const res = await upsertAvailability(businessId, values);
+
+            if (res.success) {
+                toast.success(res.message);
+                 form.reset(values)
             } else {
                 toast.error(res.message)
             }
         }))
- 
 
-     
+
+
     }
 
     return (
@@ -89,7 +104,7 @@ export default function Availability({businessId}:{businessId: string}) {
 
                 <TableBody>
                     {DAYS.map((day) => {
-                       const isEnabled = daysValues?.[day.value]?.open ?? false
+                        const isEnabled = daysValues?.[day.value]?.open ?? false
 
                         return (
                             <TableRow key={day.value}>
@@ -172,10 +187,24 @@ export default function Availability({businessId}:{businessId: string}) {
                     })}
                 </TableBody>
             </Table>
+       
+                <div className="flex gap-2 items-center mt-5">
+    <Button type="submit" disabled={!form.formState.isDirty} >
+                    Update
+                </Button>
+                     {form.formState.isDirty && (
+                    <div className="flex items-center gap-1.5">
+                    <CircleAlert size={20} />
+                        <p className="text-sm text-yellow-500">
+                            You have unsaved changes
+                        </p>
+                    </div>
 
-            <Button type="submit" className="mt-5">
-                Update
-            </Button>
+                )}
+                </div>
+            
+         
+
         </form>
     )
 }

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import PublishButton from "../[slug]/_components/PublishButton";
+
 
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 
 export default function Business({ imageUrl, name, description, phone, email, slug, isAuthor, published }: Props) {
-    return <Card size="sm" className="w-full max-w-xl mx-auto mt-10">
+    return <Card size="sm" className="w-full max-w-lg">
         <Image
             height={700} width={500}
             src={imageUrl}
@@ -43,7 +43,7 @@ export default function Business({ imageUrl, name, description, phone, email, sl
                         <div className="flex gap-1">
 
                             <div className="mt-5">
-       <PublishButton hidden={published && !isAuthor} slug={slug}/>
+      
                 <Link className={buttonVariants()} href={`/business/${slug}/book`}>Manage Services</Link>
                             </div>
                      

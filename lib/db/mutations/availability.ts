@@ -5,12 +5,11 @@ import prisma from "@/lib/config/prisma";
 
 
 export async function upsertAvailability(businessId: string, values: {
-    days: Record<string, {
-        open: boolean;
-        startTime: string;
-        endTime: string;
-    }>
+    days:{open: boolean, startTime: string, endTime: string}[]
 }) {
+
+    console.log(values);
+    
 
     const days = values.days;
 
@@ -56,7 +55,7 @@ export async function upsertAvailability(businessId: string, values: {
         return { success: true, message: "Availability has been updated" }
 
     } catch (error) {
-        console.log('There was an error updating business availability');
+        console.log('There was an error updating business availability:', error);
 
         return { success: false, message: "Availability failed to update" }
 

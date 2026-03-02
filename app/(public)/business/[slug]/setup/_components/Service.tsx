@@ -29,7 +29,7 @@ export default async function Services({businessId, slug}:{businessId: string, s
       <CardContent>
         <div className="flex gap-5">
        <p>Price: {Number(service.price)}</p>
-       <p>Price: 11</p>
+       <p>Duration: {service.duration}</p>
         </div>
 
       </CardContent>

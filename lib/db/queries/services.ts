@@ -11,7 +11,8 @@ export async function getServices(businessId: string){
                     name: true,
                     description:true,
                     price: true,
-                    id: true
+                    id: true,
+                    duration:true
                 }
     })
 

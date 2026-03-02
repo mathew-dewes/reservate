@@ -36,7 +36,6 @@ import { uploadImage } from "@/lib/db/mutations/image"
 
 
 
-
 export default function CreateBusinessForm() {
 
     const [isPending, startTransition] = useTransition();
@@ -44,14 +43,15 @@ export default function CreateBusinessForm() {
     const [image, setImage] = useState<File | null>(null);
     const router = useRouter();
 
-
     const form = useForm({
         resolver: zodResolver(businessSchema),
         defaultValues: {
             name: "",
             email: "",
             phone: "",
-            description:""
+            description: "",
+
+
         }
     });
 
@@ -68,6 +68,8 @@ export default function CreateBusinessForm() {
 
     function onSubmit(values: z.infer<typeof businessSchema>) {
         startTransition(async () => {
+  
+            
 
             const res = await createBusiness(values);
 
@@ -89,7 +91,7 @@ export default function CreateBusinessForm() {
             if (res.success) {
 
                 toast.success(res.message);
-                router.push(`/business/${slug}`)
+                router.push(`/business/${slug}/setup`)
             } else {
                 toast.error(res.message)
             }
@@ -181,6 +183,7 @@ export default function CreateBusinessForm() {
                             </Field>
                         )}
                     />
+     
                     <Controller
                         control={form.control}
                         name="description"
@@ -221,7 +224,7 @@ export default function CreateBusinessForm() {
                         <Input id="picture" type="file" accept="image/*" onChange={handleFileChange} />
                         <FieldDescription>Select a picture to upload.</FieldDescription>
                     </Field>
-                    
+
                 </FieldGroup>
             </form>
         </CardContent>

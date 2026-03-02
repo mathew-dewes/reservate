@@ -87,6 +87,7 @@ model Business {
   description String
   publish Boolean @default(false)
   slotInterval Int @default(30)
+  workdays String[]
   timezone     String  @default("Pacific/Auckland")
   user User @relation(fields: [userId], references: [id])
   services Service[]
@@ -117,7 +118,7 @@ model Service {
   description String
   userId String
   price Decimal @db.Decimal(10, 2)
-  business Business @relation(fields: [businessId], references: [id])
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   bookings Bookings[]
   user User @relation(fields: [userId], references: [id])
   

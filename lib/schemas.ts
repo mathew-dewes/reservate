@@ -16,10 +16,21 @@ export const businessSchema = z.object({
     name: z.string().min(3, 'Business name must be 3 or characters').max(20, 'Business name must be 20 or less characters'),
     email: z.string().min(1, 'Email is required'),
     phone: z.string(),
-    description: z.string().min(1, 'Description is required').max(200, 'Description must be 200 or less characters')
+    description: z.string().min(1, 'Description is required').max(200, 'Description must be 200 or less characters'),
+
 
 
 });
+
+const daySchema = z.object({
+  open: z.boolean(),
+  startTime: z.string(),
+  endTime: z.string(),
+})
+
+export const availabilitySchema = z.object({
+  days: z.record(z.string(),daySchema)
+})
 
 
 export const serviceSchema = z.object({
@@ -31,5 +42,6 @@ export const serviceSchema = z.object({
             return !isNaN(num) && num > 0;
         }, {
             message: "Service price must be greater than 0",
-        })
+        }),
+
 })

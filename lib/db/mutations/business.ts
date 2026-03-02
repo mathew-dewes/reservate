@@ -32,7 +32,9 @@ export async function createBusiness(values: z.infer<typeof businessSchema>){
                 email: parsed.data.email,
                 phone: parsed.data.phone,
                 slug: generateSlug(parsed.data.name),
-                description: parsed.data.description
+                description: parsed.data.description,
+                
+                
             },
             select:{
                 id:true,
@@ -79,18 +81,19 @@ export async function updateBusinessImage(businessId: string, imageUrl: string){
     }
 };
 
-export async function publishBusiness(slug: string){
+export async function publishBusiness(businessId: string){
 const userId = await getUserId();
+
 
 try {
     const business = await prisma.business.update({
-        where:{userId, slug},
+        where:{userId, id: businessId},
         data:{
             publish: true
         }
     });
 
-    revalidatePath('/')
+    revalidatePath('/dashboard')
     revalidatePath('/explore')
 
     return {success: true, message: business.name + " has been published"}

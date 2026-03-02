@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-export default function PublishButton({slug, hidden}:{slug: string, hidden: boolean}){
+export default function PublishButton({businessId, hasServices}:{businessId: string, hasServices: boolean}){
         const [isPending, startTransition] = useTransition();
         const router = useRouter()
 
         function handlePublish(){
             startTransition((async()=>{
-                const res = await publishBusiness(slug);
+                const res = await publishBusiness(businessId);
 
                 if (res.success){
                     toast.success(res.message);
@@ -23,6 +23,6 @@ export default function PublishButton({slug, hidden}:{slug: string, hidden: bool
             }))
         }
     return(
-        <Button hidden={hidden} type="button" disabled={isPending} onClick={handlePublish}>{isPending ? "Publishing" : "Publish"}</Button>
+        <Button type="button" disabled={isPending || !hasServices} onClick={handlePublish}>{isPending ? "Publishing" : "Publish"}</Button>
     )
 }

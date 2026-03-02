@@ -20,7 +20,7 @@ type Props = {
 
 }
 
-export default function BusinessDetails({ email, imageUrl, description, phone }: Props) {
+export default function BusinessDetails({ email, imageUrl, description, phone, name }: Props) {
   return (
     <div>
       <Card size="sm" className="w-full max-w-2xl">
@@ -43,7 +43,7 @@ export default function BusinessDetails({ email, imageUrl, description, phone }:
           </div>
 
 
-          <CardTitle>Mathews Pies</CardTitle>
+          <CardTitle>{name}</CardTitle>
           <CardDescription>
             Tagline: Tagline will go here eventually.
           </CardDescription>

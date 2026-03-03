@@ -5,7 +5,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'oxrtrrekmvslunhzycfr.supabase.co',
+        hostname: 'oxrtrrekmvslunhzycfr.supabase.co', 
+   
+
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatar.vercel.sh', 
    
 
       },

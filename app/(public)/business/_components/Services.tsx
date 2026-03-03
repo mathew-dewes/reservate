@@ -1,11 +1,24 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getServices } from "@/lib/db/queries/services";
-export default async function Services({businessId}:{businessId: string}){
+import { format } from "date-fns";
+import Link from "next/link";
+
+
+type Props = {
+    businessId: string
+    slug: string
+}
+export default async function Services({businessId, slug}:Props){
 
     const services = await getServices(businessId);
 
-    console.log(services);
+    const now = new Date()
+
+    const today = format(now, "dd-MM-yyyy");
+
+    
+
     
     return (
                     <div className="w-full">
@@ -23,9 +36,8 @@ export default async function Services({businessId}:{businessId: string}){
                             ${Number(service.price)}
                         </CardContent>
                         <CardFooter>
-                            <Button variant="outline" size="sm" className="w-1/2">
-                                Book Service
-                            </Button>
+                            <Link className={buttonVariants({variant:"outline", size:"sm", className:"w-1/2"})} href={`/business/${slug}/book?serviceId=${service.id}&date=${today}`}>Book Service</Link>
+            
                         </CardFooter>
 
 

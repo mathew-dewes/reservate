@@ -12,12 +12,11 @@ type Props = {
     email: string
     description: string
     slug: string
-    isAuthor: boolean,
-    published: boolean
+
 }
 
 
-export default function Business({ imageUrl, name, description, phone, email, slug, isAuthor, published }: Props) {
+export default function Business({ imageUrl, name, description, phone, email, slug }: Props) {
     return <Card size="sm" className="w-full max-w-lg">
         <Image
             height={700} width={500}

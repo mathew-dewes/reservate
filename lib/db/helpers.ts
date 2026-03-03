@@ -32,3 +32,23 @@ export const DAYS = [
     { label: "Friday", value: 5 },
     { label: "Saturday", value: 6 },
 ];
+
+type Availability = {
+  daysOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+export function getAvailableTimesForDay(
+  selectedDay: number,
+  availability: Availability[],
+  allTimes: string[]
+) {
+  const day = availability.find(d => d.daysOfWeek === selectedDay)
+
+  if (!day) return [] // closed day
+
+  return allTimes.filter(time => {
+    return time >= day.startTime && time < day.endTime
+  })
+}

@@ -17,4 +17,21 @@ export async function getServices(businessId: string){
     })
 
     return services
+};
+
+export async function getServiceNames(slug: string){
+    const services = await prisma.service.findMany({
+        where:{
+            business:{
+                slug
+            }
+        },
+        select:{
+            name:true,
+            id:true
+        }
+    });
+
+    return services;
+
 }

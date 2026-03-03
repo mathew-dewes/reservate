@@ -2,10 +2,12 @@
 
 import prisma from "@/lib/config/prisma";
 
-export async function getBusinessAvailability(businessId: string){
+export async function getBusinessAvailability(slug: string){
 
     const availability = await prisma.availability.findMany({
-        where:{businessId},
+        where:{business:{
+            slug
+        }},
         select:{
             daysOfWeek: true,
             startTime: true,

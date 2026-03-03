@@ -25,7 +25,8 @@ export async function addService(values: z.infer<typeof serviceSchema>, business
                 name: parsed.data.name,
                 description: parsed.data.description,
                 price: parsed.data.price,
-                userId
+                userId,
+                duration: parsed.data.duration
             }
         });
 

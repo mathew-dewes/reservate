@@ -120,6 +120,7 @@ model Service {
   price Decimal @db.Decimal(10, 2)
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   bookings Bookings[]
+  duration String
   user User @relation(fields: [userId], references: [id])
   
 }
@@ -130,7 +131,7 @@ model Availability {
   daysOfWeek Int
   startTime String
   endTime String
-  business Business @relation(fields: [businessId], references: [id])
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   @@unique([businessId, daysOfWeek])
 }
 

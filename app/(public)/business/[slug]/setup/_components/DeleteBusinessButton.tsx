@@ -2,19 +2,22 @@
 
 import { Button } from "@/components/ui/button";
 import { deleteBusiness } from "@/lib/db/mutations/business";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 import { toast } from "sonner";
 
 export default function DeleteBusinessButton({businessId}:{businessId: string}){
-    const [isPending, startTransition] = useTransition()
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter()
 
     function handleDelete(){
         startTransition(async()=>{
             const res = await deleteBusiness(businessId);
 
             if (res.success){
-                toast.success(res.message)
+                toast.success(res.message);
+                router.push('/dashboard')
             } else {
                 toast.error(res.message)
             }

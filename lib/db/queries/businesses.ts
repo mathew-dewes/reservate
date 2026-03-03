@@ -27,12 +27,32 @@ export async function getBusiness(businessSlug: string){
             phone: true,
             description: true,
             userId:true,
-            publish: true
+            publish: true,
+            id: true
         }
     });
 
     return business;
 };
+
+export async function getBusinessName(businessSlug: string){
+    
+    const business = await prisma.business.findUnique({
+        where:{
+            slug: businessSlug,
+      
+        },
+        select:{
+        
+            name: true,
+           
+        }
+    });
+
+    return business;
+};
+
+
 
 export async function getBusinessDetails(businessSlug: string){
         const business = await prisma.business.findUnique({

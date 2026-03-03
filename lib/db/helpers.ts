@@ -21,4 +21,34 @@ function generateTimeOptions() {
   return times
 }
 
-export const TIME_OPTIONS = generateTimeOptions()
+export const TIME_OPTIONS = generateTimeOptions();
+
+export const DAYS = [
+    { label: "Sunday", value: 0 },
+    { label: "Monday", value: 1 },
+    { label: "Tuesday", value: 2 },
+    { label: "Wednesday", value: 3 },
+    { label: "Thursday", value: 4 },
+    { label: "Friday", value: 5 },
+    { label: "Saturday", value: 6 },
+];
+
+type Availability = {
+  daysOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+export function getAvailableTimesForDay(
+  selectedDay: number,
+  availability: Availability[],
+  allTimes: string[]
+) {
+  const day = availability.find(d => d.daysOfWeek === selectedDay)
+
+  if (!day) return [] // closed day
+
+  return allTimes.filter(time => {
+    return time >= day.startTime && time < day.endTime
+  })
+}

@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import DeleteBusinessButton from "./DeleteBusinessButton";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -17,7 +16,7 @@ type CardProps =  {
   
 }
 
-export default function BusinessCard({name, tagline, description, businessId, imageUrl, slug}: CardProps){
+export default function BusinessCard({name, tagline, description, imageUrl, slug}: CardProps){
     return  <Card size="sm" className="w-full max-w-sm">
         <Image
         height={400} width={300}
@@ -38,7 +37,6 @@ export default function BusinessCard({name, tagline, description, businessId, im
       </CardContent>
        <CardFooter>
         <div className="flex gap-1">
-        <DeleteBusinessButton businessId={businessId}/>
        <Link className={buttonVariants()} href={'/business/' + slug}>View more</Link>
         </div>
 

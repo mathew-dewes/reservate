@@ -22,6 +22,12 @@ export const businessSchema = z.object({
 
 });
 
+export const bookingSchema = z.object({
+    customerName: z.string().min(1, "Full name is required"),
+    customerEmail: z.email(),
+    customerPhone: z.string()
+})
+
 
 
 export const availabilitySchema = z.object({

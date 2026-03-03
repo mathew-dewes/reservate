@@ -36,7 +36,7 @@ export default async function Services({businessId, slug}:Props){
                             ${Number(service.price)}
                         </CardContent>
                         <CardFooter>
-                            <Link className={buttonVariants({variant:"outline", size:"sm", className:"w-1/2"})} href={`/business/${slug}/book?serviceId=${service.id}&date=${today}`}>Book Service</Link>
+                            <Link className={buttonVariants({variant:"outline", size:"sm", className:"w-1/2"})} href={`/business/${slug}/book/${service.id}?date=${today}`}>Book Service</Link>
             
                         </CardFooter>
 

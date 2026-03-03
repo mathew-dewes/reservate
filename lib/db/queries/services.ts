@@ -34,4 +34,26 @@ export async function getServiceNames(slug: string){
 
     return services;
 
+};
+
+export async function getServiceName(serviceId: string){
+    const service = await prisma.service.findUnique({
+        where:{id: serviceId}
+    });
+
+    return service?.name
+}
+
+export async function getService(serviceId: string){
+    const service = await prisma.service.findUnique({
+        where:{
+            id: serviceId
+        },
+        select:{
+            name:true,
+            id: true
+        }
+    });
+
+    return service
 }

@@ -115,7 +115,7 @@ export default function CreateBusinessForm() {
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+            <form id="businessForm" onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
                     <Controller
                         control={form.control}
@@ -233,7 +233,7 @@ export default function CreateBusinessForm() {
                 <Button onClick={() => form.reset()} type="button" variant="outline">
                     Reset
                 </Button>
-                <Button type="submit" form="form-rhf-demo">
+                <Button type="submit" form="businessForm">
                     {isPending ? "Submitting" : "Submit"}
                 </Button>
                 {uploading && <p>Uploading...</p>}

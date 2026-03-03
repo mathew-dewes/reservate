@@ -23,20 +23,20 @@ export default function TimeSlots({slug, serviceId, availability}:Props){
 
   const date = searchParams.get("date")
 
-  function getDayNumberFromSearchParams() {
+function getDayNumberFromSearchParams() {
   const dateParam = searchParams.get("date")
   if (!dateParam) return null
 
-  const [year, month, day] = dateParam.split("-").map(Number)
-  const date = new Date(day, month - 1, year)
-
-  return date.getDay()
-};
+  const [day, month, year] = dateParam.split("-").map(Number)
+  return new Date(year, month -1, day).getDay() 
+}
 
 
 
 
 const selectedDay = getDayNumberFromSearchParams();
+
+
 
     
     const times = getAvailableTimesForDay(
@@ -44,6 +44,11 @@ const selectedDay = getDayNumberFromSearchParams();
   availability,
   TIME_OPTIONS
 );
+
+console.log(times);
+
+
+
 
 
     

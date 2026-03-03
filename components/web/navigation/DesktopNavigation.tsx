@@ -29,8 +29,24 @@ export default function DesktopNavigation(){
  
     return <ul className="flex gap-5 items-center font-medium">
         {navLinks.map((link, key)=>{
-            return    <Link hidden={!session && link.href !== "/explore"} key={key} className={cn(
-                    buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg"}))} href={link.href}>{link.name}</Link>
+                  const show = session || link.href === "/explore"
+            return (
+            <li 
+            key={key}
+            className={cn(
+            "transition-all duration-300 ease-out transform",
+            show
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-2 pointer-events-none absolute"
+          )}>
+          <Link 
+            hidden={!session && link.href !== "/explore"} 
+            
+            className={cn(
+                    buttonVariants({ variant: `${isActive(link.href) ? "default" : "ghost"}`, size: "lg"}))} 
+                    href={link.href}>{link.name}</Link>
+            </li>
+  )
         })}
                         <Button hidden={!session} onClick={() => authClient.signOut({
                             fetchOptions: {
@@ -46,7 +62,7 @@ export default function DesktopNavigation(){
                                 }
                             }
                         })}>Logout</Button>
-                        {!session && <GoogleLoginButton size="lg"/>}
+                       <GoogleLoginButton hide={!session} size="lg"/>
                
 
 

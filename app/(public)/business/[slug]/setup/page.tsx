@@ -34,7 +34,7 @@ export default async function page({params}:
             <div className="space-y-5 mb-10">
             <BusinessDetails imageUrl={business.imageUrl ?? ""} name={business.name} phone={business.phone} description={business.description} email={business.email}/>
             <Availability savedValues={availability} businessId={business.id}/>
-            <Services slug={slug} businessId={business.id}/>
+            <Services slug={slug}/>
             <ServiceForm slug={slug} businessId={business.id}/>
             <div hidden={business._count.services > 0} className="flex gap-2 items-center">
                    <CircleAlert size={20} />

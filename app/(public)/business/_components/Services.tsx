@@ -6,12 +6,11 @@ import Link from "next/link";
 
 
 type Props = {
-    businessId: string
     slug: string
 }
-export default async function Services({businessId, slug}:Props){
+export default async function Services({slug}:Props){
 
-    const services = await getServices(businessId);
+    const services = await getServices(slug);
 
     const now = new Date()
 

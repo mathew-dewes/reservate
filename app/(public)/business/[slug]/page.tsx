@@ -23,7 +23,7 @@ export default async function page({params}:
     return (
         <div className="flex mt-10 gap-5">
             <Business slug={slug} email={business.email} imageUrl={business.imageUrl!} name={business.name} phone={business.phone} description={business.description}/>
-            <Services slug={slug} businessId={business.id}/>
+            <Services slug={slug}/>
         </div>
     )
 }

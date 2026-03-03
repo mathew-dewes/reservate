@@ -46,9 +46,23 @@ export function getAvailableTimesForDay(
 ) {
   const day = availability.find(d => d.daysOfWeek === selectedDay)
 
-  if (!day) return [] // closed day
+  if (!day) return [];
+
+    const now = new Date();
+  const todayDayNumber = now.getDay();
+
+  
 
   return allTimes.filter(time => {
-    return time >= day.startTime && time < day.endTime
-  })
+    if (time < day.startTime || time >= day.endTime) return false;
+        if (selectedDay === todayDayNumber) {
+      const [hours, minutes] = time.split(":").map(Number);
+      const timeMinutes = hours * 60 + minutes;
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      if (timeMinutes <= nowMinutes) return false; 
+    }
+
+    return true
+  });
+  
 }

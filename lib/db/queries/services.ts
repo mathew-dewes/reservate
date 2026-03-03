@@ -2,10 +2,13 @@
 
 import prisma from "@/lib/config/prisma";
 
-export async function getServices(businessId: string){
+export async function getServices(slug: string){
     const services = await prisma.service.findMany({
         where:{
-            businessId
+ 
+            business:{
+                slug
+            }
                 },
                 select:{
                     name: true,
@@ -14,35 +17,18 @@ export async function getServices(businessId: string){
                     id: true,
                     duration:true
                 }
-    })
-
-    return services
-};
-
-export async function getServiceNames(slug: string){
-    const services = await prisma.service.findMany({
-        where:{
-            business:{
-                slug
-            }
-        },
-        select:{
-            name:true,
-            id:true
-        }
     });
 
-    return services;
 
+const serializedServices = services.map(s => ({
+  ...s,
+  price: s.price.toNumber()
+}));
+
+    return serializedServices
 };
 
-export async function getServiceName(serviceId: string){
-    const service = await prisma.service.findUnique({
-        where:{id: serviceId}
-    });
 
-    return service?.name
-}
 
 export async function getService(serviceId: string){
     const service = await prisma.service.findUnique({

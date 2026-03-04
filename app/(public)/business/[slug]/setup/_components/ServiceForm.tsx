@@ -21,7 +21,7 @@ import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-export default function ServiceForm({ businessId, slug }: { businessId: string, slug: string }) {
+export default function ServiceForm({slug }: { slug: string }) {
 
     const [isPending, startTransition] = useTransition();
 
@@ -30,14 +30,16 @@ export default function ServiceForm({ businessId, slug }: { businessId: string, 
         defaultValues: {
             name: "",
             description: "",
-            duration: 30
+            duration: 30,
+             price: "" 
+            
         }
     });
 
     function onSubmit(values: z.infer<typeof serviceSchema>) {
         startTransition(async () => {
 
-            const res = await addService(values, businessId, slug);
+            const res = await addService(values, slug, slug);
 
             if (res.success) {
                 toast.success(res.message);
@@ -119,9 +121,8 @@ export default function ServiceForm({ businessId, slug }: { businessId: string, 
                             <Controller
                                 control={form.control}
                                 name="price"
-
-
-                                render={({ field, fieldState }) => (
+                                
+                            render={({ field, fieldState }) => (
                                     <Field data-invalid={fieldState.invalid}>
                                         <FieldLabel htmlFor="form-rhf-demo-title">
                                             Price (Optional):
@@ -129,6 +130,7 @@ export default function ServiceForm({ businessId, slug }: { businessId: string, 
                                         <Input
                                             {...field}
                                             type="number"
+                                              value={field.value ?? ""}
                                             onChange={(e) => field.onChange(e.target.value === "" ? "" : Number(e.target.value))}
                                             id="form-rhf-demo-title"
                                             aria-invalid={fieldState.invalid}

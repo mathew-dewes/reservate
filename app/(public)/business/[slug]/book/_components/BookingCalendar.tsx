@@ -30,7 +30,7 @@ export default function BookingCalendar({availability}:{availability: {
     router.replace(`${pathname}?${params.toString()}`, {scroll: false})
   }
   return <Calendar   disabled={(date) => {
-    const today = new Date()
+    const today = new Date();
     today.setHours(0,0,0,0)
 
     const isPast = date < today

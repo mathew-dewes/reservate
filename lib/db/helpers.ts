@@ -1,10 +1,12 @@
+
+import { TZDate } from "@date-fns/tz";
 export function generateSlug(name: string) {
   return name
     .toLowerCase()
     .trim()
     .replace(/&/g, "and")
-    .replace(/[\s\W-]+/g, "-")    
-    .replace(/^-+|-+$/g, "");      
+    .replace(/[\s\W-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 };
 
 function generateTimeOptions() {
@@ -24,47 +26,66 @@ function generateTimeOptions() {
 export const TIME_OPTIONS = generateTimeOptions();
 
 export const DAYS = [
-    { label: "Sunday", value: 0 },
-    { label: "Monday", value: 1 },
-    { label: "Tuesday", value: 2 },
-    { label: "Wednesday", value: 3 },
-    { label: "Thursday", value: 4 },
-    { label: "Friday", value: 5 },
-    { label: "Saturday", value: 6 },
+  { label: "Sunday", value: 0 },
+  { label: "Monday", value: 1 },
+  { label: "Tuesday", value: 2 },
+  { label: "Wednesday", value: 3 },
+  { label: "Thursday", value: 4 },
+  { label: "Friday", value: 5 },
+  { label: "Saturday", value: 6 },
 ];
+
+
+export function getNZTime() {
+  const now = new Date();
+  return new TZDate(now, "Pacific/Auckland");
+}
 
 
 
 export function getAvailableTimes(
-  selectedDate: Date,       // the date user selected
-  availability: { startTime: string; endTime: string }[], // for that day
-  allTimes: string[]        // your '00:00', '00:30', ... array
+  selectedDate: Date,  
+  availability: { startTime: string; endTime: string }[],
+  allTimes: string[] 
 ) {
   if (!availability.length) return [];
 
-  const now = new Date();
-  const isToday =
-    selectedDate.getFullYear() === now.getFullYear() &&
-    selectedDate.getMonth() === now.getMonth() &&
-    selectedDate.getDate() === now.getDate();
+  const now = getNZTime();
 
-  const dayAvailability = availability[0]; // assuming one range per day
+  const today = new TZDate(now, "Pacific/Auckland");
+  today.setHours(0, 0, 0, 0);
+
+  const compareDate = new TZDate(selectedDate, "Pacific/Auckland");
+  compareDate.setHours(0, 0, 0, 0);
+
+  const isToday = today.getTime() === compareDate.getTime();
+  const isPastDay = compareDate.getTime() < today.getTime();
+
+    if (isPastDay) return [];
+
+
+  const { startTime, endTime } = availability[0];
 
   return allTimes.filter((timeStr) => {
-    // Only keep times inside business hours
-    if (timeStr < dayAvailability.startTime || timeStr >= dayAvailability.endTime) {
+    if (timeStr < startTime || timeStr >= endTime) {
       return false;
     }
 
-    // Remove past times if selected date is today
-    if (isToday) {
-      const [hours, minutes] = timeStr.split(":").map(Number);
-      const slotTime = new Date(selectedDate);
-      slotTime.setHours(hours, minutes, 0, 0);
+    if (!isToday) return true;
 
-      if (slotTime <= now) return false;
-    }
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    const slotTime = new TZDate(selectedDate, "Pacific/Auckland");
+    slotTime.setHours(hours, minutes, 0, 0);
 
-    return true;
+    return slotTime.getTime() > now.getTime();
   });
+};
+
+
+export function parseBookingDateTime(dateStr: string, timeStr: string) {
+  const [day, month, year] = dateStr.split("-").map(Number);
+  const [hours, minutes] = timeStr.split(":").map(Number);
+
+  // TZDate ensures NZ timezone
+  return new TZDate(year, month - 1, day, hours, minutes, 0, "Pacific/Auckland");
 }

@@ -81,13 +81,13 @@ export async function updateBusinessImage(businessId: string, imageUrl: string){
     }
 };
 
-export async function publishBusiness(businessId: string){
+export async function publishBusiness(businessSlug: string){
 const userId = await getUserId();
 
 
 try {
     const business = await prisma.business.update({
-        where:{userId, id: businessId},
+        where:{userId, slug: businessSlug},
         data:{
             publish: true
         }
@@ -104,18 +104,19 @@ try {
 }
 }
 
-export async function deleteBusiness(businessId: string){
+export async function deleteBusiness(businessSlug: string){
     const userId = await getUserId();
 
     try {
         const business = await prisma.business.delete({
-            where:{userId, id: businessId},
+            where:{userId, slug: businessSlug},
             select:{
-                name: true
+                name: true,
+                id: true
             }
         });
 
-        const folder = businessId;
+        const folder = business.id;
         const {data: files, error: listError} = await supabaseAdmin.storage.from('business-images').list(folder);
 
         if (listError){

@@ -3,8 +3,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {  getAvailableTimes, TIME_OPTIONS } from "@/lib/db/helpers";
+import { format } from "date-fns";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { TZDate } from "@date-fns/tz";
 
 type Props = {
     slug: string
@@ -20,23 +22,36 @@ type Props = {
 
 export default function TimeSlots({slug, serviceId, availability}:Props){
 
-  const searchParams = useSearchParams();
+const searchParams = useSearchParams();
+const now = new Date();
+const formatted = format(new Date(now), "dd-MM-yyyy");
+const queryDate = searchParams.get("date") ?? formatted; 
 
-const dateParam = searchParams.get("date"); // "04-03-2026"
+if (!queryDate) return null;
 
-if (!dateParam) return null;
+const [day, month, year] = queryDate.split("-").map(Number);
+const selectedDate = new TZDate(year, month - 1, day, "Pacific/Auckland");
+const formattedDate = format(selectedDate, "dd-MM-yyyy");
 
-// Split the string and build a Date
-const [day, month, year] = dateParam.split("-").map(Number);
-const selectedDate = new Date(year, month - 1, day); // month is 0-indexed
-  
+
+const selectedDay = selectedDate.getDay();
+
+const todaysAvailability = availability.filter(
+  item => item.daysOfWeek === selectedDay
+);
+
+
+
 
 
 const availableSlots = getAvailableTimes(
-  selectedDate,// user-selected date
-  [{ startTime: "09:00", endTime: "17:00" }], // business hours for that day
+  selectedDate,
+  todaysAvailability, 
   TIME_OPTIONS
 );
+
+
+
 
 
     
@@ -48,7 +63,7 @@ const availableSlots = getAvailableTimes(
                     <CardTitle className="text-center">{time}</CardTitle>
     
                     <CardFooter>
-                        <Link className={buttonVariants({className: "w-full"})} href={`/business/${slug}/book/${serviceId}/confirm?time=${time}&date=${selectedDate}`}>Book</Link>
+                        <Link className={buttonVariants({className: "w-full"})} href={`/business/${slug}/book/${serviceId}/confirm?time=${time}&date=${formattedDate}`}>Book</Link>
                  
             
             

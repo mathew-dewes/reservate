@@ -7,13 +7,13 @@ import { useTransition } from "react";
 
 import { toast } from "sonner";
 
-export default function DeleteBusinessButton({businessId}:{businessId: string}){
+export default function DeleteBusinessButton({businessSlug}:{businessSlug: string}){
     const [isPending, startTransition] = useTransition();
     const router = useRouter()
 
     function handleDelete(){
         startTransition(async()=>{
-            const res = await deleteBusiness(businessId);
+            const res = await deleteBusiness(businessSlug);
 
             if (res.success){
                 toast.success(res.message);

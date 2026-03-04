@@ -9,6 +9,7 @@ import ServiceSelector from "../_components/ServiceSelector";
 import TimeSlots from "../_components/TimeSlots";
 import { getBusinessAvailability } from "@/lib/db/queries/availability";
 
+
 export default async function page({params}:
     {params: Promise<{slug: string, serviceId: string}>}
 ){
@@ -17,7 +18,7 @@ export default async function page({params}:
  
      const {slug, serviceId} = await params;
     const services = await getServices(slug);
-      const availability = await getBusinessAvailability(slug);
+    const availability = await getBusinessAvailability(slug);
     
       
     if (!slug || !serviceId) return

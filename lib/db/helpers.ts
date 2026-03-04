@@ -33,22 +33,38 @@ export const DAYS = [
     { label: "Saturday", value: 6 },
 ];
 
-type Availability = {
-  daysOfWeek: number
-  startTime: string
-  endTime: string
-}
 
-export function getAvailableTimesForDay(
-  selectedDay: number,
-  availability: Availability[],
-  allTimes: string[]
+
+export function getAvailableTimes(
+  selectedDate: Date,       // the date user selected
+  availability: { startTime: string; endTime: string }[], // for that day
+  allTimes: string[]        // your '00:00', '00:30', ... array
 ) {
-  const day = availability.find(d => d.daysOfWeek === selectedDay)
+  if (!availability.length) return [];
 
-  if (!day) return [] // closed day
+  const now = new Date();
+  const isToday =
+    selectedDate.getFullYear() === now.getFullYear() &&
+    selectedDate.getMonth() === now.getMonth() &&
+    selectedDate.getDate() === now.getDate();
 
-  return allTimes.filter(time => {
-    return time >= day.startTime && time < day.endTime
-  })
+  const dayAvailability = availability[0]; // assuming one range per day
+
+  return allTimes.filter((timeStr) => {
+    // Only keep times inside business hours
+    if (timeStr < dayAvailability.startTime || timeStr >= dayAvailability.endTime) {
+      return false;
+    }
+
+    // Remove past times if selected date is today
+    if (isToday) {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      const slotTime = new Date(selectedDate);
+      slotTime.setHours(hours, minutes, 0, 0);
+
+      if (slotTime <= now) return false;
+    }
+
+    return true;
+  });
 }

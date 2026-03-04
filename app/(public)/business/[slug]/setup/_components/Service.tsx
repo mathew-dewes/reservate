@@ -11,9 +11,9 @@ import {
 import RemoveServiceButton from "./RemoveServiceButton";
 
 
-export default async function Services({businessId, slug}:{businessId: string, slug: string}){
+export default async function Services({slug}:{slug: string}){
 
-    const services = await getServices(businessId);
+    const services = await getServices(slug);
     
     return (
         <div>

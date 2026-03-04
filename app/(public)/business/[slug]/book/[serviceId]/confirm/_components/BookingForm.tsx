@@ -10,14 +10,19 @@ import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-export default function BookingForm() {
+type Props = {
+    customerName: string
+    customerEmail:string
+}
+
+export default function BookingForm({customerName, customerEmail}: Props) {
         const [isPending, startTransition] = useTransition();
 
     const form = useForm({
         resolver: zodResolver(bookingSchema),
         defaultValues: {
-            customerName: "",
-            customerEmail: "",
+            customerName,
+            customerEmail,
             customerPhone: ""
         }
     });

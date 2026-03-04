@@ -120,7 +120,7 @@ model Service {
   price Decimal @db.Decimal(10, 2)
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   bookings Bookings[]
-  duration String
+  duration Int
   user User @relation(fields: [userId], references: [id])
   
 }

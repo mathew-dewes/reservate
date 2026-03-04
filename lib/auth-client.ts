@@ -3,14 +3,15 @@ import { createAuthClient } from "better-auth/react"
 export const authClient =  createAuthClient({
 baseURL: process.env["BASE_URL"],
 
+
 });
 
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = async (redirect: string) => {
 
     try {
-          const {data, error} = await authClient.signIn.social({
+          const {error} = await authClient.signIn.social({
     provider: "google",
-    callbackURL: '/dashboard'
+    callbackURL: redirect + "?login=success"
     
   });
   
@@ -20,10 +21,10 @@ export const signInWithGoogle = async () => {
     return {success: false, message: "There was an error"}
   }
 
-  console.log(data);
+
   
 
-    return {success: true, message: `Welcome`}
+    return {success: true, message: `Login Successful`}
     } catch (error) {
         console.log(error);
         

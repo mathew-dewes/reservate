@@ -18,7 +18,7 @@ return(
   </div>
 
           <div className="mt-20 flex justify-center gap-5">
-            {!session && <GoogleLoginButton/>}
+            {!session && <GoogleLoginButton hide={!session}/>}
             {session && <Link className={buttonVariants({size: "lg"})} href={'/dashboard'}>View Dashboard</Link>}
             {session && <Link className={buttonVariants({size: "lg"})} href={'/my-bookings'}>Manage Bookings</Link> }
             <Link className={buttonVariants({size: "lg"})} href={'/explore'}>Explore</Link>

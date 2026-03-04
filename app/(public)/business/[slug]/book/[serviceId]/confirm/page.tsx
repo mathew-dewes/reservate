@@ -2,6 +2,7 @@ import { getBusinessName } from "@/lib/db/queries/businesses";
 import BookingForm from "./_components/BookingForm";
 import SelectedService from "./_components/SelectedService";
 import { getServices } from "@/lib/db/queries/services";
+import { getSession } from "@/lib/db/session/user";
 
 
 export default async function page({params}:
@@ -14,6 +15,9 @@ export default async function page({params}:
     
         const business = await getBusinessName(slug);
         const services = await getServices(slug);
+        const session = await getSession();
+
+        const userInfo = session?.user;
 
         const selectedServiceName = services.find((service) => service.id == serviceId)?.name ?? "Unknown"
 
@@ -26,7 +30,7 @@ export default async function page({params}:
     return (
         <div className="space-y-6">
             <SelectedService serviceName={selectedServiceName}  businessName={business.name}/>
-            <BookingForm/>
+            <BookingForm customerName={userInfo?.name ?? ""} customerEmail={userInfo?.email ?? ""}/>
         </div>
     )
 }

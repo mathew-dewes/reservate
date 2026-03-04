@@ -50,7 +50,7 @@
 
 @layer base {
   p {
-     @apply font-thin text-sm md:text-base
+     @apply font-thin text-sm
   }
 
   h1 {

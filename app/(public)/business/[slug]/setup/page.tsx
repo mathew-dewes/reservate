@@ -18,10 +18,11 @@ export default async function page({params}:
 
             const business = await getBusinessDetails(slug);
                    if (!business) return
-            const availability = await getBusinessAvailability(business.id);
+            const availability = await getBusinessAvailability(slug);
+            
 
   
-            
+        
 
             
          

@@ -4,7 +4,7 @@ import prisma from "@/lib/config/prisma";
 
 
 
-export async function upsertAvailability(businessId: string, values: {
+export async function upsertAvailability(businessSlug: string, values: {
     days:{open: boolean, startTime: string, endTime: string}[]
 }) {
 
@@ -22,8 +22,8 @@ export async function upsertAvailability(businessId: string, values: {
             if (day.open) {
                 await prisma.availability.upsert({
                     where: {
-                        businessId_daysOfWeek: {
-                            businessId,
+                        businessSlug_daysOfWeek: {
+                            businessSlug,
                             daysOfWeek: parseInt(dayNumber),
                         },
                     },
@@ -32,7 +32,7 @@ export async function upsertAvailability(businessId: string, values: {
                         endTime: day.endTime,
                     },
                     create: {
-                        businessId,
+                        businessSlug,
                         daysOfWeek: parseInt(dayNumber),
                         startTime: day.startTime,
                         endTime: day.endTime,
@@ -42,7 +42,7 @@ export async function upsertAvailability(businessId: string, values: {
             } else {
                     await prisma.availability.deleteMany({
           where: {
-            businessId,
+            businessSlug,
             daysOfWeek: parseInt(dayNumber),
           },
         });

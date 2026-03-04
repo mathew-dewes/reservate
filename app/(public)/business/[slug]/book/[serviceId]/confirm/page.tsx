@@ -30,7 +30,7 @@ export default async function page({params}:
     return (
         <div className="space-y-6">
             <SelectedService serviceName={selectedServiceName}  businessName={business.name}/>
-            <BookingForm customerName={userInfo?.name ?? ""} customerEmail={userInfo?.email ?? ""}/>
+            <BookingForm serviceId={serviceId} businessSlug={slug} customerName={userInfo?.name ?? ""} customerEmail={userInfo?.email ?? ""}/>
         </div>
     )
 }

@@ -32,7 +32,7 @@ import { CircleAlert } from "lucide-react"
 
 
 type Props = {
-    businessId: string
+    businessSlug: string
     savedValues: {
         daysOfWeek: number
         startTime: string
@@ -60,7 +60,7 @@ function buildDays(savedValues: Props["savedValues"]) {
 
 
 
-export default function Availability({ businessId, savedValues }: Props) {
+export default function Availability({ businessSlug, savedValues }: Props) {
     const form = useForm<z.infer<typeof availabilitySchema>>({
         resolver: zodResolver(availabilitySchema),
         defaultValues: {
@@ -76,7 +76,7 @@ export default function Availability({ businessId, savedValues }: Props) {
     function onSubmit(values: z.infer<typeof availabilitySchema>) {
         startTransition((async () => {
 
-            const res = await upsertAvailability(businessId, values);
+            const res = await upsertAvailability(businessSlug, values);
 
             if (res.success) {
                 toast.success(res.message);

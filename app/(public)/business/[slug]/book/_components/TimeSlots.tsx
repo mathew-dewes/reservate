@@ -31,6 +31,7 @@ if (!queryDate) return null;
 
 const [day, month, year] = queryDate.split("-").map(Number);
 const selectedDate = new TZDate(year, month - 1, day, "Pacific/Auckland");
+const formattedDate = format(selectedDate, "dd-MM-yyyy");
 
 
 const selectedDay = selectedDate.getDay();
@@ -62,7 +63,7 @@ const availableSlots = getAvailableTimes(
                     <CardTitle className="text-center">{time}</CardTitle>
     
                     <CardFooter>
-                        <Link className={buttonVariants({className: "w-full"})} href={`/business/${slug}/book/${serviceId}/confirm?time=${time}&date=${selectedDate}`}>Book</Link>
+                        <Link className={buttonVariants({className: "w-full"})} href={`/business/${slug}/book/${serviceId}/confirm?time=${time}&date=${formattedDate}`}>Book</Link>
                  
             
             

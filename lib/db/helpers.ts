@@ -79,4 +79,13 @@ export function getAvailableTimes(
 
     return slotTime.getTime() > now.getTime();
   });
+};
+
+
+export function parseBookingDateTime(dateStr: string, timeStr: string) {
+  const [day, month, year] = dateStr.split("-").map(Number);
+  const [hours, minutes] = timeStr.split(":").map(Number);
+
+  // TZDate ensures NZ timezone
+  return new TZDate(year, month - 1, day, hours, minutes, 0, "Pacific/Auckland");
 }

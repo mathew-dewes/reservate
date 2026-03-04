@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 import { getUserId } from "../session/user";
 
-export async function addService(values: z.infer<typeof serviceSchema>, businessId: string, slug: string){
+export async function addService(values: z.infer<typeof serviceSchema>, businessSlug: string, slug: string){
 
 
 
@@ -17,14 +17,16 @@ export async function addService(values: z.infer<typeof serviceSchema>, business
              if (!parsed.success){
             console.error('Validation errors:', parsed.error);
             throw new Error('Validation failed');
-        }
+        };
+
+        
 
         const service = await prisma.service.create({
             data:{
-                businessId,
+                businessSlug,
                 name: parsed.data.name,
                 description: parsed.data.description,
-                price: parsed.data.price,
+                price: Number(parsed.data.price) ?? 0,
                 userId,
                 duration: parsed.data.duration
             }

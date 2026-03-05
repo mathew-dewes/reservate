@@ -1,5 +1,6 @@
 
 import { TZDate } from "@date-fns/tz";
+import { Prisma } from "../generated/prisma/client";
 export function generateSlug(name: string) {
   return name
     .toLowerCase()
@@ -41,12 +42,16 @@ export function getNZTime() {
   return new TZDate(now, "Pacific/Auckland");
 }
 
-
+type Booking = {
+  startTime: Date
+  endTime: Date
+}
 
 export function getAvailableTimes(
-  selectedDate: Date,  
+  selectedDate: Date,
   availability: { startTime: string; endTime: string }[],
-  allTimes: string[] 
+  allTimes: string[],
+  bookings: Booking[],
 ) {
   if (!availability.length) return [];
 
@@ -61,31 +66,61 @@ export function getAvailableTimes(
   const isToday = today.getTime() === compareDate.getTime();
   const isPastDay = compareDate.getTime() < today.getTime();
 
-    if (isPastDay) return [];
 
+  if (isPastDay) return [];
 
   const { startTime, endTime } = availability[0];
 
-  return allTimes.filter((timeStr) => {
-    if (timeStr < startTime || timeStr >= endTime) {
-      return false;
-    }
+  return allTimes
 
-    if (!isToday) return true;
+    .filter((timeStr) => {
+      return timeStr >= startTime && timeStr < endTime;
+    })
 
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    const slotTime = new TZDate(selectedDate, "Pacific/Auckland");
-    slotTime.setHours(hours, minutes, 0, 0);
+    .filter((timeStr) => {
+      if (!isToday) return true;
 
-    return slotTime.getTime() > now.getTime();
-  });
-};
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      const slotTime = new TZDate(selectedDate, "Pacific/Auckland");
+      slotTime.setHours(hours, minutes, 0, 0);
+
+      return slotTime.getTime() > now.getTime();
+    })
+
+    .map((timeStr) => {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+
+      const slotStart = new TZDate(selectedDate, "Pacific/Auckland");
+      slotStart.setHours(hours, minutes, 0, 0);
+
+      const slotEnd = new TZDate(slotStart, "Pacific/Auckland");
+      slotEnd.setMinutes(slotEnd.getMinutes() + 30);
+
+      const overlaps = bookings.some((booking) => {
+        return slotStart < booking.endTime && slotEnd > booking.startTime;
+      });
+
+      return {
+        time: timeStr,
+        disabled: overlaps, 
+      };
+    });
+}
+
+
 
 
 export function parseBookingDateTime(dateStr: string, timeStr: string) {
   const [day, month, year] = dateStr.split("-").map(Number);
   const [hours, minutes] = timeStr.split(":").map(Number);
 
-  // TZDate ensures NZ timezone
+
   return new TZDate(year, month - 1, day, hours, minutes, 0, "Pacific/Auckland");
 }
+
+
+export function decimalToMoney(value: Prisma.Decimal) {
+  return new Intl.NumberFormat('en-NZ',
+    { style: 'currency', currency: 'NZD' }
+  ).format(value.toNumber())
+};

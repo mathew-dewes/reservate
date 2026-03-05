@@ -4,6 +4,7 @@ import prisma from "@/lib/config/prisma";
 import { bookingSchema } from "@/lib/schemas";
 import z from "zod";
 import { getUserId } from "../session/user";
+import { revalidatePath } from "next/cache";
 
 
 export async function createBooking(
@@ -67,4 +68,27 @@ export async function createBooking(
 
     }
 
+};
+
+
+export async function cancelBooking(bookingId: string){
+
+    try {
+      await prisma.bookings.update({
+            data:{
+                status: "CANCELLED"
+            },
+            where:{id: bookingId}
+        });
+
+        revalidatePath('/my-bookings')
+
+        return {success: true, message: 'Booking cancelled'}
+    } catch (error) {
+
+        console.log(error);
+        return {success: false, message: "There was an error"}
+        
+        
+    }
 }

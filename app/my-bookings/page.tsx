@@ -1,7 +1,9 @@
+import UserBookings from "./_components/UserBookings";
+
 export default function bookingsPage(){
     return (
         <div>
-            <p>Bookings page</p>
+            <UserBookings/>
         </div>
     )
 }

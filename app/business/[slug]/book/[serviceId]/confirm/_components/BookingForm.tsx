@@ -4,34 +4,34 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { parseBookingDateTime } from "@/lib/db/helpers";
+
 import { createBooking } from "@/lib/db/mutations/booking";
 import { bookingSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TZDate } from "@date-fns/tz";
+
 import z from "zod";
 import { toast } from "sonner";
 
 type Props = {
     customerName: string
-    customerEmail:string
+    customerEmail: string
     businessSlug: string
     serviceId: string
 }
 
-export default function BookingForm({customerName, customerEmail, businessSlug, serviceId}: Props) {
-        const [isPending, startTransition] = useTransition();
-        const params = useSearchParams();
-        const router = useRouter()
+export default function BookingForm({ customerName, customerEmail, businessSlug, serviceId }: Props) {
+    const [isPending, startTransition] = useTransition();
+    const params = useSearchParams();
+    const router = useRouter()
 
-        const bookingDate = params.get("date");
-        const bookingTime = params.get("time");
+    const bookingDate = params.get("date");
+    const bookingTime = params.get("time");
 
 
-        
+
 
 
     const form = useForm({
@@ -39,22 +39,26 @@ export default function BookingForm({customerName, customerEmail, businessSlug, 
         defaultValues: {
             customerName,
             customerEmail,
-         
+            customerPhone: undefined
+        
+   
+
+
         }
     });
 
     function onSubmit(values: z.infer<typeof bookingSchema>) {
-    if (!bookingDate || !bookingTime) return;
+        if (!bookingDate || !bookingTime) return;
 
 
 
-        startTransition((async()=>{
-        const res = await createBooking(values, businessSlug, serviceId, bookingDate, bookingTime);
+        startTransition((async () => {
+            const res = await createBooking(values, businessSlug, serviceId, bookingDate, bookingTime);
 
-        if(res?.success){
-            toast.success(res.message);
-            router.push('/dashboard')
-        }
+            if (res?.success) {
+                toast.success(res.message);
+                router.push('/dashboard')
+            }
         }))
 
 
@@ -122,6 +126,7 @@ export default function BookingForm({customerName, customerEmail, businessSlug, 
                                     aria-invalid={fieldState.invalid}
                                     placeholder="Enter phone number"
                                     autoComplete="off"
+                                    type="tell"
                                 />
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
@@ -131,14 +136,14 @@ export default function BookingForm({customerName, customerEmail, businessSlug, 
                     />
 
                 </FieldGroup>
-                
+
             </form>
         </CardContent>
         <CardFooter>
-        <Field orientation={"horizontal"}>
-            <Button form="bookingForm" type="submit">{isPending ? "Submitting" : "Submit"}</Button>
+            <Field orientation={"horizontal"}>
+                <Button form="bookingForm" type="submit">{isPending ? "Submitting" : "Submit"}</Button>
 
-        </Field>
+            </Field>
         </CardFooter>
     </Card>
 }

@@ -155,7 +155,7 @@ model Bookings {
     service Service @relation(fields: [serviceId], references: [id])
     customer User @relation(fields: [customerId], references: [id])
 
-    @@unique([businessSlug, startTime])
+    @@unique([businessSlug, startTime, status])
     @@index([businessSlug, startTime])
 }
 

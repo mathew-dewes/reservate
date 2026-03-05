@@ -48,6 +48,37 @@ export async function getUserBookings(){
 };
 
 
+export async function getUpcomingUserBookings(){
+
+    const userId = await getUserId();
+
+    const bookings = await prisma.bookings.findMany({
+        where:{
+            business:{
+                userId
+            },
+            status:{
+                not: "CANCELLED"
+            }
+        },
+        select:{
+            id: true,
+            startTime:true,
+            customerName:true,
+            customerPhone:true,
+            customerEmail:true,
+            service:{
+                select: {
+                    name: true,
+                }
+            }
+        }
+    });
+
+    return bookings;
+}
+
+
 export async function getServiceBookingTimes(serviceId: string){
       const serviceBookings = await prisma.bookings.findMany({
         where:{

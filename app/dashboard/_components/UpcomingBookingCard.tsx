@@ -1,19 +1,29 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function UpcomingBookingCard(){
+
+type Props ={
+    serviceName: string,
+    startTime: string,
+    customerName: string,
+    customerEmail: string,
+    customerPhone: string | null
+}
+
+export default function UpcomingBookingCard({serviceName, startTime, customerEmail, customerName, customerPhone}: Props){
     return  <Card className="mt-5 w-full max-w-xs">
                 <CardHeader>
-         <CardTitle>Lawn mowing</CardTitle>
+         <CardTitle>{serviceName}</CardTitle>
          <CardDescription>
-            <p className="text-sm">Today: 12:00 - 13:00</p>
+            <p className="text-sm">{startTime}</p>
          </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div>
-                        <p className="text-sm">Customer: Bob Marley</p>
-                        <p className="text-sm">Phone: 01201201</p>
-                        <p className="text-sm">Email: bob@gmail.com</p>
+                        <p className="text-sm">Customer: {customerName}</p>
+                        {customerPhone && <p className="text-sm">Phone: {customerPhone}</p>}
+                   
+                        <p className="text-sm">Email: {customerEmail}</p>
                     </div>
                 </CardContent>
        
